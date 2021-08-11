@@ -1,0 +1,71 @@
+import React, { useState, useEffect, useRef } from "react";
+
+// todo form
+const TodoForm = (props) => {
+  const [input, setInput] = useState(props.edit ? props.edit.value : ""); // 입력값
+  // 입력값이 원래 있으면(edit하려고 했을 떄는 value가 있으니까) 입력값을 set하고
+  // 없으면 추가하는 것으로 간주하고 빈 string으로 set
+
+  const inputRef = useRef(null);
+
+  useEffect(() => {
+    inputRef.current.focus();
+  }, [input]);
+
+  const handleChange = (e) => {
+    setInput(e.target.value);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    // 다른 component로 data 전달
+    // id는 랜덤생성, text는 input에서 전달받은 value
+    // 근데 이건 뭐지 .onSubmit은 뭐야
+    props.onSubmit({
+      id: Math.floor(Math.random() * 10000),
+      text: input,
+    });
+
+    // Input 초기화
+    setInput("");
+  };
+
+  return (
+    <form className="todo-form" onSubmit={handleSubmit}>
+      {props.edit ? (
+        <>
+          <input
+            type="text"
+            placeholder="Update your item"
+            value={input}
+            name="text"
+            className="todo-input edit"
+            onChange={handleChange}
+            ref={inputRef}
+          />
+          <button className="todo-btn edit" type="submit">
+            Update
+          </button>
+        </>
+      ) : (
+        <>
+          <input
+            type="text"
+            placeholder="Add a todo"
+            value={input}
+            name="text"
+            className="todo-input"
+            onChange={handleChange}
+            ref={inputRef}
+          />
+          <button className="todo-btn" type="submit">
+            Add todo
+          </button>
+        </>
+      )}
+    </form>
+  );
+};
+
+export default TodoForm;

@@ -1,7 +1,9 @@
+import TodoList from "./components/TodoList";
+
 function App() {
   return (
-    <div className="App">
-      <h2>This is an app</h2>
+    <div className="todo-app">
+      <TodoList />
     </div>
   );
 }
