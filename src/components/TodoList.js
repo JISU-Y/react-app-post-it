@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Todo from "./Todo";
 import TodoForm from "./TodoForm";
+import { FiPlusCircle } from "react-icons/fi";
 
 const TodoList = () => {
   const [todos, setTodos] = useState([]);
@@ -46,8 +47,7 @@ const TodoList = () => {
   };
 
   return (
-    <div>
-      <h1>What's the Plan for Today?</h1>
+    <div className="todo-app">
       <TodoForm onSubmit={addTodo} />
       <Todo
         todos={todos}
@@ -55,6 +55,7 @@ const TodoList = () => {
         removeTodo={removeTodo}
         updateTodo={updateTodo}
       />
+      <FiPlusCircle className="plus-icon" />
     </div>
   );
 };
