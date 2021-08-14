@@ -15,7 +15,7 @@ const TodoBoard = () => {
   return (
     <>
       {todoLists.map((todos, index) => {
-        return <TodoList key={index} todos={todos} addPostit={addPostit} />;
+        return <TodoList key={index} addPostit={addPostit} />;
       })}
     </>
   );
