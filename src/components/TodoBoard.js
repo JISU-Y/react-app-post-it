@@ -2,15 +2,21 @@ import React, { useState } from "react";
 import TodoList from "./TodoList";
 
 const TodoBoard = () => {
-  const [todoLists, setTodoLists] = useState([]);
+  // todoList -> todo 배열의 배열
+  const [todoLists, setTodoLists] = useState([[]]);
 
-  const addPostit = () => {};
+  // post it 추가
+  const addPostit = () => {
+    const newTodoLists = [[], ...todoLists];
+
+    setTodoLists(newTodoLists);
+  };
 
   return (
-    // <div className="todo-app">
-    // </div>
     <>
-      <TodoList />
+      {todoLists.map((todos, index) => {
+        return <TodoList key={index} todos={todos} addPostit={addPostit} />;
+      })}
     </>
   );
 };
