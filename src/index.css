@@ -68,6 +68,24 @@ body {
   cursor: pointer;
 }
 
+.edit-icon.postit {
+  position: absolute;
+  bottom: 8px;
+  left: 50px;
+  font-size: 25px;
+  color: #fff;
+  cursor: pointer;
+}
+
+.done-icon {
+  position: absolute;
+  bottom: 8px;
+  left: 80px;
+  font-size: 25px;
+  color: #fff;
+  cursor: pointer;
+}
+
 h1 {
   margin: 32px 0;
   color: #fff;

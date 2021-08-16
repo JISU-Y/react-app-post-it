@@ -2,13 +2,16 @@ import React, { useState } from "react";
 import Todo from "./Todo";
 import TodoForm from "./TodoForm";
 import { FiPlusCircle, FiMinusCircle } from "react-icons/fi";
+import { TiEdit } from "react-icons/ti";
+import { MdDone } from "react-icons/md";
 import { ImCross } from "react-icons/im";
 
 //todoList 는 TodoBoard에서 가져온 todos의 배열 중 배열 한 개씩
-const TodoList = ({ todoList, addPostit, removePostit }) => {
+const TodoList = ({ todoList, addPostit, removePostit, editPostit }) => {
   // 여기서 따로 사용할 todo 배열
   // todos는 todo ({id:1,text:a}의 모음/배열)
   const [todos, setTodos] = useState([]);
+  const [isEdit, setIsEdit] = useState(false);
 
   const addTodo = (todo) => {
     // todo는 {id: number, text: textInput} 임
@@ -58,13 +61,24 @@ const TodoList = ({ todoList, addPostit, removePostit }) => {
     setTodos([]);
   };
 
+  const handleEditPost = () => {
+    setIsEdit(true);
+
+    setTodos(todoList.todos);
+  };
+
+  const handleEditDone = () => {
+    setIsEdit(false);
+    editPostit(todoList.id, todos);
+  };
+
   return (
     <div className="todo-app">
       <TodoForm onSubmit={addTodo} />
       <Todo
         // postit이 motherpost일때만 받아적을 수 있도록 todos 해놓고,
         // 나머지는 todoList에 있는 todos 내용 고대로 가져와서 display 한다
-        todos={todoList.id === 0 ? todos : todoList.todos}
+        todos={todoList.id === 0 || isEdit ? todos : todoList.todos}
         completeTodo={completeTodo}
         removeTodo={removeTodo}
         updateTodo={updateTodo}
@@ -77,6 +91,10 @@ const TodoList = ({ todoList, addPostit, removePostit }) => {
           onClick={() => removePostit(todoList.id)}
         />
       )}
+      {todoList.id !== 0 && (
+        <TiEdit className="edit-icon postit" onClick={handleEditPost} />
+      )}
+      {isEdit && <MdDone className="done-icon" onClick={handleEditDone} />}
     </div>
   );
 };

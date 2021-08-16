@@ -28,6 +28,19 @@ const TodoBoard = () => {
   };
 
   // post it Edit
+  const editPostit = (id, todos) => {
+    // id에 맞는지 확인하고 잠금? 클릭 불가하게 막아뒀던거 풀기
+    // 수정 중
+
+    // 위에랑 합쳐도 될 것 같은데 일단 ㄱㄱ
+    const newTodoList = {
+      id: id,
+      todos: todos,
+    };
+    setTodoLists((prev) =>
+      prev.map((item) => (item.id === id ? newTodoList : item))
+    );
+  };
 
   // PostIt 삭제
   const removePostit = (id) => {
@@ -45,6 +58,7 @@ const TodoBoard = () => {
             todoList={todoList}
             addPostit={addPostit}
             removePostit={removePostit}
+            editPostit={editPostit}
           />
         );
       })}
