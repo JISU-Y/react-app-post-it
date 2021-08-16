@@ -22,6 +22,7 @@ const TodoForm = (props) => {
     // 다른 component로 data 전달
     // id는 랜덤생성, text는 input에서 전달받은 value
     // 근데 이건 뭐지 .onSubmit은 뭐야
+    // 여기서 TodoList.js에 있는 addTodo로 todo를 넘겨주어서 항목 생성
     props.onSubmit({
       id: Math.floor(Math.random() * 10000),
       text: input,

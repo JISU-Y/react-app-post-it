@@ -1,25 +1,43 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import TodoList from "./TodoList";
 
 const TodoBoard = () => {
   // todoList -> todo 배열의 배열
   // ['apple', 'avocado', 'ace'], ['banana','bun', 'bowl'], ['cake','cactus'] ... 이렇게 가야함
-  const [todoLists, setTodoLists] = useState([[]]);
+  //
+  const [todoLists, setTodoLists] = useState([{ id: 0, todos: [] }]);
+  // { id: null, todos: [] } 이거 하나 -> 이것의 배열의 위에 있는 todoLists
+  const [todoList, setTodoList] = useState({ id: null, todos: [] });
 
   // post it 추가
   const addPostit = (todos) => {
+    // todos는 [ {id:1234, text: input}, {id:1234, text: input}, {id:1234, text: input}, ... ,{} ]
     // 추가했던 to do 들 저장하여 todoLists에 옮긴다
-    const newTodoLists = [...todoLists, todos];
-
-    // clearPostit(todos);
+    const newTodoList = { id: Math.floor(Math.random() * 100), todos: todos };
+    const newTodoLists = [...todoLists, newTodoList];
 
     setTodoLists(newTodoLists);
+
+    console.log(newTodoLists);
   };
 
-  // PostIt 초기화
-  const clearPostit = (todos) => {
-    todos = [];
+  // Post it 업데이트
+  const updatePostit = (postId, newValue) => {
+    setTodoLists((prev) =>
+      prev.map((item) => (item.id === postId ? newValue : item))
+    );
   };
+
+  // PostIt 삭제
+  const removePostit = (id) => {
+    const removedPost = [...todoLists].filter((todos) => todos.id !== id);
+
+    setTodoLists(removedPost);
+  };
+
+  // useEffect((todos) => {
+  //   setTodoLists({ id: Math.floor(Math.random() * 100), todos: todos });
+  // }, []);
 
   return (
     <>
@@ -28,7 +46,7 @@ const TodoBoard = () => {
           <TodoList
             key={index}
             addPostit={addPostit}
-            clearPostit={clearPostit}
+            removePostit={removePostit}
           />
         );
       })}
@@ -50,3 +68,4 @@ export default TodoBoard;
 // 완성된 todo는 밑으로 보내서 해야할 것들이 todo list의 상단에 올라오도록
 // css post it 처럼 꾸미기
 // todo list 색 바꿀 수 있도록 수정 (오른쪽 마우스 클릭해서 몇 가지 색으로만 바꿀 수 있도록)
+// postit 개별 삭제 추가

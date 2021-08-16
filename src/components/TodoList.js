@@ -1,14 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Todo from "./Todo";
 import TodoForm from "./TodoForm";
-import { FiPlusCircle } from "react-icons/fi";
+import { FiPlusCircle, FiMinusCircle } from "react-icons/fi";
+import { ImCross } from "react-icons/im";
 
 //todoList 는 TodoBoard에서 가져온 todos의 배열 중 배열 한 개씩
-const TodoList = ({ todoList, addPostit, clearPostit, isMother }) => {
+const TodoList = ({ addPostit, removePostit }) => {
   // 여기서 따로 사용할 todo 배열
+  // todos는 todo ({id:1,text:a}의 모음/배열)
   const [todos, setTodos] = useState([]);
 
   const addTodo = (todo) => {
+    // todo는 {id: number, text: textInput} 임
     // 추가하려고 하는 todo의 text를 검사
     if (!todo.text || /^\s*$/.test(todo.text)) {
       return;
@@ -58,6 +61,7 @@ const TodoList = ({ todoList, addPostit, clearPostit, isMother }) => {
         updateTodo={updateTodo}
       />
       <FiPlusCircle className="plus-icon" onClick={() => addPostit(todos)} />
+      <FiMinusCircle className="minus-icon" onClick={() => removePostit()} />
     </div>
   );
 };

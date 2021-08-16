@@ -59,6 +59,15 @@ body {
   cursor: pointer;
 }
 
+.minus-icon {
+  position: absolute;
+  bottom: 8px;
+  left: 8px;
+  font-size: 25px;
+  color: #fff;
+  cursor: pointer;
+}
+
 h1 {
   margin: 32px 0;
   color: #fff;
