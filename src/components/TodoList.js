@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Todo from "./Todo";
 import TodoForm from "./TodoForm";
 import { FiPlusCircle } from "react-icons/fi";
 
-const TodoList = ({ addPostit }) => {
+//todoList 는 TodoBoard에서 가져온 todos의 배열 중 배열 한 개씩
+const TodoList = ({ todoList, addPostit, clearPostit, isMother }) => {
   // 여기서 따로 사용할 todo 배열
   const [todos, setTodos] = useState([]);
 
@@ -47,7 +48,11 @@ const TodoList = ({ addPostit }) => {
     setTodos(updatedTodos);
   };
 
-  return (
+  if (!isMother) {
+    setTodos(todoList);
+  }
+
+  return isMother ? (
     <div className="todo-app">
       <TodoForm onSubmit={addTodo} />
       <Todo
@@ -56,7 +61,18 @@ const TodoList = ({ addPostit }) => {
         removeTodo={removeTodo}
         updateTodo={updateTodo}
       />
-      <FiPlusCircle className="plus-icon" onClick={addPostit} />
+      <FiPlusCircle className="plus-icon" onClick={() => addPostit(todos)} />
+    </div>
+  ) : (
+    <div className="todo-app">
+      <TodoForm onSubmit={addTodo} />
+      <Todo
+        // 여기서 todos는 board에서 가져온 todoList여야 한다
+        todos={todoList}
+        completeTodo={() => completeTodo(todoList.id)}
+        removeTodo={() => removeTodo(todoList.id)}
+        updateTodo={updateTodo}
+      />
     </div>
   );
 };
