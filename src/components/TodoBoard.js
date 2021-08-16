@@ -4,16 +4,22 @@ import TodoList from "./TodoList";
 const TodoBoard = () => {
   // todoList -> todo 배열의 배열
   // ['apple', 'avocado', 'ace'], ['banana','bun', 'bowl'], ['cake','cactus'] ... 이렇게 가야함
-  //
+
   const [todoLists, setTodoLists] = useState([{ id: 0, todos: [] }]);
-  // { id: null, todos: [] } 이거 하나 -> 이것의 배열의 위에 있는 todoLists
-  const [todoList, setTodoList] = useState({ id: null, todos: [] });
 
   // post it 추가
   const addPostit = (todos) => {
     // todos는 [ {id:1234, text: input}, {id:1234, text: input}, {id:1234, text: input}, ... ,{} ]
     // 추가했던 to do 들 저장하여 todoLists에 옮긴다
-    const newTodoList = { id: Math.floor(Math.random() * 100), todos: todos };
+
+    // { id: null, todos: [] } 이거 하나 -> 이것의 배열의 위에 있는 todoLists
+
+    const newTodoList = {
+      // 0은 motherPost 꺼임
+      id: Math.floor(Math.random() * 10000 + 1),
+      todos: todos,
+    };
+
     const newTodoLists = [...todoLists, newTodoList];
 
     setTodoLists(newTodoLists);
@@ -21,23 +27,14 @@ const TodoBoard = () => {
     console.log(newTodoLists);
   };
 
-  // Post it 업데이트
-  const updatePostit = (postId, newValue) => {
-    setTodoLists((prev) =>
-      prev.map((item) => (item.id === postId ? newValue : item))
-    );
-  };
+  // post it Edit
 
   // PostIt 삭제
   const removePostit = (id) => {
-    const removedPost = [...todoLists].filter((todos) => todos.id !== id);
+    const removedPost = [...todoLists].filter((todoList) => todoList.id !== id);
 
     setTodoLists(removedPost);
   };
-
-  // useEffect((todos) => {
-  //   setTodoLists({ id: Math.floor(Math.random() * 100), todos: todos });
-  // }, []);
 
   return (
     <>
@@ -45,6 +42,7 @@ const TodoBoard = () => {
         return (
           <TodoList
             key={index}
+            todoList={todoList}
             addPostit={addPostit}
             removePostit={removePostit}
           />
