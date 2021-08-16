@@ -48,11 +48,7 @@ const TodoList = ({ todoList, addPostit, clearPostit, isMother }) => {
     setTodos(updatedTodos);
   };
 
-  if (!isMother) {
-    setTodos(todoList);
-  }
-
-  return isMother ? (
+  return (
     <div className="todo-app">
       <TodoForm onSubmit={addTodo} />
       <Todo
@@ -62,17 +58,6 @@ const TodoList = ({ todoList, addPostit, clearPostit, isMother }) => {
         updateTodo={updateTodo}
       />
       <FiPlusCircle className="plus-icon" onClick={() => addPostit(todos)} />
-    </div>
-  ) : (
-    <div className="todo-app">
-      <TodoForm onSubmit={addTodo} />
-      <Todo
-        // 여기서 todos는 board에서 가져온 todoList여야 한다
-        todos={todoList}
-        completeTodo={() => completeTodo(todoList.id)}
-        removeTodo={() => removeTodo(todoList.id)}
-        updateTodo={updateTodo}
-      />
     </div>
   );
 };
