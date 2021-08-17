@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import Todo from "./Todo";
 import TodoForm from "./TodoForm";
 import { FiPlusCircle, FiMinusCircle } from "react-icons/fi";
@@ -12,6 +12,11 @@ const TodoList = ({ todoList, addPostit, removePostit, editPostit }) => {
   // todos는 todo ({id:1,text:a}의 모음/배열)
   const [todos, setTodos] = useState([]);
   const [isEdit, setIsEdit] = useState(false);
+
+  // 오른쪽 클릭 좌표
+  const [anchorPoint, setAnchorPoint] = useState({ x: 0, y: 0 });
+  // menu 보여주거나 말거나
+  const [show, setShow] = useState(false);
 
   const addTodo = (todo) => {
     // todo는 {id: number, text: textInput} 임
@@ -72,8 +77,44 @@ const TodoList = ({ todoList, addPostit, removePostit, editPostit }) => {
     editPostit(todoList.id, todos);
   };
 
+  // 색 바꾸기 혹은 오른쪽 클릭 메뉴 생성
+  const handleContextMenu = useCallback(
+    (e) => {
+      e.preventDefault();
+      setAnchorPoint({ x: e.pageX, y: e.pageY });
+      setShow(true);
+    },
+    [setAnchorPoint, setShow]
+  );
+
+  const handleClick = useCallback(() => (show ? setShow(false) : null), [show]);
+
+  useEffect(() => {
+    document.addEventListener("click", handleClick);
+    document.addEventListener("contextmenu", handleContextMenu);
+    return () => {
+      document.removeEventListener("click", handleClick);
+      document.removeEventListener("contextmenu", handleContextMenu);
+    };
+  });
+
+  const todoAppRef = useRef(null);
+  const [colorIndex, setColorIndex] = useState(0); // 이게 중요 / 보통 / 나중 태그로 활용될 수도
+  const postColor = ["#ffd20c", "#5d0cff", "#ff7614", "#149fff", "#fa0087"];
+
+  const changeColor = () => {
+    setColorIndex((index) => {
+      let newIndex = index + 1;
+      if (newIndex > postColor.length - 1) {
+        newIndex = 0;
+      }
+      return newIndex;
+    });
+    todoAppRef.current.style.backgroundColor = `${postColor[colorIndex]}`;
+  };
+
   return (
-    <div className="todo-app">
+    <div className="todo-app" ref={todoAppRef}>
       <TodoForm onSubmit={addTodo} />
       <Todo
         // postit이 motherpost일때만 받아적을 수 있도록 todos 해놓고,
@@ -95,6 +136,25 @@ const TodoList = ({ todoList, addPostit, removePostit, editPostit }) => {
         <TiEdit className="edit-icon postit" onClick={handleEditPost} />
       )}
       {isEdit && <MdDone className="done-icon" onClick={handleEditDone} />}
+      {show ? (
+        <ul
+          className="menu"
+          style={{
+            top: anchorPoint.y,
+            left: anchorPoint.x,
+          }}
+        >
+          <li>add</li>
+          <li>edit</li>
+          <li>delete</li>
+          <li onClick={changeColor}>changing color</li>
+          <hr className="divider" />
+          <li>Refresh</li>
+          <li onClick={handleClick}>Exit</li>
+        </ul>
+      ) : (
+        <> </>
+      )}
     </div>
   );
 };
