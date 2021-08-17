@@ -81,7 +81,13 @@ const TodoList = ({ todoList, addPostit, removePostit, editPostit }) => {
   const handleContextMenu = useCallback(
     (e) => {
       e.preventDefault();
-      setAnchorPoint({ x: e.pageX, y: e.pageY });
+
+      const rect = e.target.getBoundingClientRect();
+      const rectX = e.clientX - rect.left; // x position within the element.
+      const rectY = e.clientY - rect.top; // y position within the element.
+
+      // setAnchorPoint({ x: e.pageX, y: e.pageY });
+      setAnchorPoint({ x: rectX, y: rectY });
       setShow(true);
     },
     [setAnchorPoint, setShow]
@@ -89,16 +95,17 @@ const TodoList = ({ todoList, addPostit, removePostit, editPostit }) => {
 
   const handleClick = useCallback(() => (show ? setShow(false) : null), [show]);
 
+  const todoAppRef = useRef(null);
+
   useEffect(() => {
     document.addEventListener("click", handleClick);
-    document.addEventListener("contextmenu", handleContextMenu);
+    document.addEventListener("contextmenu", handleContextMenu); // todoAppRef.current
     return () => {
       document.removeEventListener("click", handleClick);
       document.removeEventListener("contextmenu", handleContextMenu);
     };
   });
 
-  const todoAppRef = useRef(null);
   const [colorIndex, setColorIndex] = useState(0); // 이게 중요 / 보통 / 나중 태그로 활용될 수도
   const postColor = ["#ffd20c", "#5d0cff", "#ff7614", "#149fff", "#fa0087"];
 
@@ -110,10 +117,13 @@ const TodoList = ({ todoList, addPostit, removePostit, editPostit }) => {
       }
       return newIndex;
     });
+    console.log(todoAppRef.current);
+
     todoAppRef.current.style.backgroundColor = `${postColor[colorIndex]}`;
   };
 
   return (
+    // useRef 말고 다른걸 써야하나.. 이러면 한개밖에 못 바꿈
     <div className="todo-app" ref={todoAppRef}>
       <TodoForm onSubmit={addTodo} />
       <Todo
@@ -144,9 +154,9 @@ const TodoList = ({ todoList, addPostit, removePostit, editPostit }) => {
             left: anchorPoint.x,
           }}
         >
-          <li>add</li>
-          <li>edit</li>
-          <li>delete</li>
+          <li onClick={handleAddPost}>add</li>
+          <li onClick={handleEditPost}>edit</li>
+          <li onClick={() => removePostit(todoList.id)}>delete</li>
           <li onClick={changeColor}>changing color</li>
           <hr className="divider" />
           <li>Refresh</li>

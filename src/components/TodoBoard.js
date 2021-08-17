@@ -28,6 +28,7 @@ const TodoBoard = () => {
 
   // post it Edit
   const editPostit = (id, todos) => {
+    if (id === 0) return;
     // id에 맞는지 확인하고 잠금? 클릭 불가하게 막아뒀던거 풀기
     // 수정 중
 
@@ -43,6 +44,7 @@ const TodoBoard = () => {
 
   // PostIt 삭제
   const removePostit = (id) => {
+    if (id === 0) return;
     const removedPost = [...todoLists].filter((todoList) => todoList.id !== id);
 
     setTodoLists(removedPost);
