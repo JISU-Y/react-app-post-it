@@ -7,7 +7,13 @@ import { MdDone } from "react-icons/md";
 import { ImCross } from "react-icons/im";
 
 //todoList 는 TodoBoard에서 가져온 todos의 배열 중 배열 한 개씩
-const TodoList = ({ todoList, addPostit, removePostit, editPostit }) => {
+const TodoList = ({
+  todoLists,
+  todoList,
+  addPostit,
+  removePostit,
+  editPostit,
+}) => {
   // 여기서 따로 사용할 todo 배열
   // todos는 todo ({id:1,text:a}의 모음/배열)
   const [todos, setTodos] = useState([]);
@@ -82,6 +88,8 @@ const TodoList = ({ todoList, addPostit, removePostit, editPostit }) => {
     (e) => {
       e.preventDefault();
 
+      console.log(e.target);
+
       const rect = e.target.getBoundingClientRect();
       const rectX = e.clientX - rect.left; // x position within the element.
       const rectY = e.clientY - rect.top; // y position within the element.
@@ -98,8 +106,10 @@ const TodoList = ({ todoList, addPostit, removePostit, editPostit }) => {
   const todoAppRef = useRef(null);
 
   useEffect(() => {
+    // todoAppRef.current 이거 쓰면 하나씩 나오긴하는데 클릭이 안먹음 ㅠㅠ
+    // document로 하면 클릭은 다 먹히는데 모든 todo-app에 다 생김
     document.addEventListener("click", handleClick);
-    document.addEventListener("contextmenu", handleContextMenu); // todoAppRef.current
+    document.addEventListener("contextmenu", handleContextMenu);
     return () => {
       document.removeEventListener("click", handleClick);
       document.removeEventListener("contextmenu", handleContextMenu);
@@ -118,12 +128,13 @@ const TodoList = ({ todoList, addPostit, removePostit, editPostit }) => {
       return newIndex;
     });
     console.log(todoAppRef.current);
+    console.log(todoList.id);
 
     todoAppRef.current.style.backgroundColor = `${postColor[colorIndex]}`;
+    setShow(false);
   };
 
   return (
-    // useRef 말고 다른걸 써야하나.. 이러면 한개밖에 못 바꿈
     <div className="todo-app" ref={todoAppRef}>
       <TodoForm onSubmit={addTodo} />
       <Todo

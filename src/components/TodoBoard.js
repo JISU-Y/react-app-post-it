@@ -56,6 +56,7 @@ const TodoBoard = () => {
         return (
           <TodoList
             key={index}
+            todoLists={todoLists}
             todoList={todoList}
             addPostit={addPostit}
             removePostit={removePostit}
