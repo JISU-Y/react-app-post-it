@@ -81,6 +81,7 @@ const TodoList = ({
   const handleEditDone = () => {
     setIsEdit(false);
     editPostit(todoList.id, todos);
+    setTodos([]); // edit done 하고 add post 하면 todos 그대로 복사해가므로 초기화
   };
 
   // 색 바꾸기 혹은 오른쪽 클릭 메뉴 생성

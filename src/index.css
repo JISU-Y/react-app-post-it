@@ -34,6 +34,7 @@ body {
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
   display: flex;
   flex-wrap: wrap;
+  position: relative;
   /* overflow 안에 element 밖으로 나가도 됨 */
 }
 
@@ -50,7 +51,11 @@ body {
   margin: 15px;
   border-radius: 10px;
   padding-bottom: 32px;
-  position: relative;
+  position: absolute;
+}
+
+.todo-app:hover {
+  box-shadow: 0 0 10px 0 darkgray;
 }
 /* 
 보라색 5d0cff

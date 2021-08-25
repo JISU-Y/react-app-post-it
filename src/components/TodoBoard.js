@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
+import { FiBox } from "react-icons/fi";
 import TodoList from "./TodoList";
 
 const TodoBoard = () => {
@@ -50,6 +51,34 @@ const TodoBoard = () => {
     setTodoLists(removedPost);
   };
 
+  // // Drag and Drop 구현
+  // let posX = 0;
+  // let posY = 0;
+
+  // const dragStartHandler = (e) => {
+  //   posX = e.clientX;
+  //   posY = e.clientY;
+  // };
+
+  // const dragHandler = (e) => {
+  //   e.target.style.left = `${e.target.offsetLeft + e.clientX - posX}px`;
+  //   e.target.style.top = `${e.target.offsetTop + e.clientY - posY}px`;
+  //   posY = e.clientY;
+  //   posX = e.clientX;
+  // };
+
+  // const dragEndHandler = (e) => {
+  //   setTargets((targets) => {
+  //     const newTargets = [...targets];
+  //     newTargets.push({
+  //       id: parseInt(e.timeStamp),
+  //       top: e.target.offsetTop + e.clientY - posY,
+  //       left: e.target.offsetLeft + e.clientX - posX,
+  //     });
+  //     return newTargets;
+  //   });
+  // };
+
   return (
     <>
       {todoLists.map((todoList, index) => {
@@ -77,9 +106,12 @@ export default TodoBoard;
 // 생성했으면 그 메모에서도  + 하여 생성할 수 있도록 해야함
 
 // backend 구현해야함 (MERN ? , Firebase? , 일단 Local Storage?)
-// Board 안에서 post it 드래그 앤 드랍 할 수 있도록 구현
 // 완성된 todo는 밑으로 보내서 해야할 것들이 todo list의 상단에 올라오도록
 // css post it 처럼 꾸미기
 // todo list 색 바꿀 수 있도록 수정 (오른쪽 마우스 클릭해서 몇 가지 색으로만 바꿀 수 있도록) => 오른쪽 마우스 클릭 됨
 // postit 개별 삭제 추가 => 됨
 // postit 개별 edit 추가 => 됨
+
+// 우선순위
+// Board 안에서 post it 드래그 앤 드랍 할 수 있도록 구현
+// context menu 한개 element에서만 동작하도록
