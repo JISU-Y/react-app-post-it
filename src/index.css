@@ -32,9 +32,9 @@ body {
   height: 85vh;
   border-radius: 5px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-  display: flex;
+  /* display: flex;
   flex-wrap: wrap;
-  position: relative;
+  position: relative; */
   /* overflow 안에 element 밖으로 나가도 됨 */
 }
 
@@ -51,7 +51,7 @@ body {
   margin: 15px;
   border-radius: 10px;
   padding-bottom: 32px;
-  position: absolute;
+  position: relative;
 }
 
 .todo-app:hover {

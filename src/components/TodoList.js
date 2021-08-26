@@ -88,8 +88,10 @@ const TodoList = ({
   const handleContextMenu = useCallback(
     (e) => {
       e.preventDefault();
-
-      console.log(e.target);
+      if (e.target.className !== "todo-app") {
+        setShow(false);
+        return;
+      }
 
       const rect = e.target.getBoundingClientRect();
       const rectX = e.clientX - rect.left; // x position within the element.
@@ -107,17 +109,17 @@ const TodoList = ({
   const todoAppRef = useRef(null);
 
   useEffect(() => {
-    // todoAppRef.current 이거 쓰면 하나씩 나오긴하는데 클릭이 안먹음 ㅠㅠ
-    // document로 하면 클릭은 다 먹히는데 모든 todo-app에 다 생김
     document.addEventListener("click", handleClick);
-    document.addEventListener("contextmenu", handleContextMenu);
+    todoAppRef.current.addEventListener("contextmenu", handleContextMenu);
     return () => {
+      // context menu는 각각의 todoList에서 event를 생기게 하고
+      // context menu를 없앨때는 어디든 클릭하면 없어져야 하므로 document로 한다
       document.removeEventListener("click", handleClick);
       document.removeEventListener("contextmenu", handleContextMenu);
     };
-  });
+  }, [handleClick, handleContextMenu]);
 
-  const [colorIndex, setColorIndex] = useState(0); // 이게 중요 / 보통 / 나중 태그로 활용될 수도
+  const [colorIndex, setColorIndex] = useState(1); // 이게 중요 / 보통 / 나중 태그로 활용될 수도
   const postColor = ["#ffd20c", "#5d0cff", "#ff7614", "#149fff", "#fa0087"];
 
   const changeColor = () => {
@@ -126,10 +128,10 @@ const TodoList = ({
       if (newIndex > postColor.length - 1) {
         newIndex = 0;
       }
+      console.log(index);
+      console.log(newIndex);
       return newIndex;
     });
-    console.log(todoAppRef.current);
-    console.log(todoList.id);
 
     todoAppRef.current.style.backgroundColor = `${postColor[colorIndex]}`;
     setShow(false);
