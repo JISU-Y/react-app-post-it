@@ -75,12 +75,18 @@ const TodoList = ({
   const handleEditPost = () => {
     setIsEdit(true);
 
+    // editing unblock
+    editBlock.current.style.display = "none";
+
     setTodos(todoList.todos);
   };
 
   const handleEditDone = () => {
     setIsEdit(false);
     editPostit(todoList.id, todos);
+    // Edit 상태일 때만 작업할 수 있도록(input 넣기, update하기, todo 삭제하기 등등)
+    // editing block
+    editBlock.current.style.display = "flex";
     setTodos([]); // edit done 하고 add post 하면 todos 그대로 복사해가므로 초기화
   };
 
@@ -103,6 +109,13 @@ const TodoList = ({
     },
     [setAnchorPoint, setShow]
   );
+
+  useEffect(() => {
+    if (todoList.id === 0) {
+      // editing unblock
+      editBlock.current.style.display = "none";
+    }
+  }, [todoList]);
 
   const handleClick = useCallback(() => (show ? setShow(false) : null), [show]);
 
@@ -137,8 +150,12 @@ const TodoList = ({
     setShow(false);
   };
 
+  const editBlock = useRef(null);
+
   return (
     <div className="todo-app" ref={todoAppRef}>
+      {/* Editing -> Edit cover */}
+      <div className="edit-block" ref={editBlock}></div>
       <TodoForm onSubmit={addTodo} />
       <Todo
         // postit이 motherpost일때만 받아적을 수 있도록 todos 해놓고,
@@ -159,7 +176,9 @@ const TodoList = ({
       {todoList.id !== 0 && (
         <TiEdit className="edit-icon postit" onClick={handleEditPost} />
       )}
-      {isEdit && <MdDone className="done-icon" onClick={handleEditDone} />}
+      {todoList.id !== 0 && isEdit && (
+        <MdDone className="done-icon" onClick={handleEditDone} />
+      )}
       {show ? (
         <ul
           className="menu"

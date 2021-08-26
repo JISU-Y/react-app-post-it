@@ -32,9 +32,9 @@ body {
   height: 85vh;
   border-radius: 5px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-  /* display: flex;
+  display: flex;
   flex-wrap: wrap;
-  position: relative; */
+  position: relative;
   /* overflow 안에 element 밖으로 나가도 됨 */
 }
 
@@ -51,7 +51,7 @@ body {
   margin: 15px;
   border-radius: 10px;
   padding-bottom: 32px;
-  position: relative;
+  position: absolute;
 }
 
 .todo-app:hover {
@@ -64,6 +64,20 @@ body {
 분홍색 fa0087
 노란색 ffd20c
 */
+
+/* editing block */
+.edit-block {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  width: 100%;
+  min-height: 100%;
+  background: transparent;
+  text-align: center;
+  border-radius: 10px;
+  padding-bottom: 32px;
+  position: absolute;
+}
 
 .plus-icon {
   position: absolute;

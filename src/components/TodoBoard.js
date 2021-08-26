@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import { FiBox } from "react-icons/fi";
 import TodoList from "./TodoList";
 
@@ -51,36 +51,34 @@ const TodoBoard = () => {
     setTodoLists(removedPost);
   };
 
-  // // Drag and Drop 구현
+  // Drag and Drop 구현
+  const postBoard = useRef(null);
+
+  const [position, setPosition] = useState({ x: 0, y: 0 });
   // let posX = 0;
   // let posY = 0;
 
-  // const dragStartHandler = (e) => {
-  //   posX = e.clientX;
-  //   posY = e.clientY;
-  // };
+  let originalX = 0;
+  let originalY = 0;
 
-  // const dragHandler = (e) => {
-  //   e.target.style.left = `${e.target.offsetLeft + e.clientX - posX}px`;
-  //   e.target.style.top = `${e.target.offsetTop + e.clientY - posY}px`;
-  //   posY = e.clientY;
-  //   posX = e.clientX;
-  // };
+  const dragStartHandler = (e) => {
+    console.log("working");
+    // 드래그 시 반투명 이미지 추가
+    const img = new Image();
+    e.dataTransfer.setDragImage(img, 0, 0);
 
-  // const dragEndHandler = (e) => {
-  //   setTargets((targets) => {
-  //     const newTargets = [...targets];
-  //     newTargets.push({
-  //       id: parseInt(e.timeStamp),
-  //       top: e.target.offsetTop + e.clientY - posY,
-  //       left: e.target.offsetLeft + e.clientX - posX,
-  //     });
-  //     return newTargets;
-  //   });
-  // };
+    // 이동시킬 때 필요한 좌표
+    setPosition({ x: e.clientX, y: e.clientY });
+    // posX = e.clientX;
+    // posY = e.clientY;
+
+    // 초기 위치 값 (잘못된 위치에 놓았을 때 다시 원래 위치로 돌아갈 수 있도록)
+    originalX = e.target.offsetLeft;
+    originalY = e.target.offsetTop;
+  };
 
   return (
-    <>
+    <div className="todo-board" ref={postBoard} onDragStart={dragStartHandler}>
       {todoLists.map((todoList, index) => {
         return (
           <TodoList
@@ -93,7 +91,7 @@ const TodoBoard = () => {
           />
         );
       })}
-    </>
+    </div>
   );
 };
 
