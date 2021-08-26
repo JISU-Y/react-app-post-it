@@ -52,7 +52,11 @@ const TodoBoard = () => {
   };
 
   // Drag and Drop 구현
+
+  // 드랍할 영역이 위치한 컴포넌트
   const postBoard = useRef(null);
+  // const box = postBoard.current.getBoundingClientRect();
+  // const [targets, setTargets] = useState("");
 
   const [position, setPosition] = useState({ x: 0, y: 0 });
   // let posX = 0;
@@ -61,8 +65,8 @@ const TodoBoard = () => {
   let originalX = 0;
   let originalY = 0;
 
+  // 드래그 시작되었을 때 실행 - onDragStart
   const dragStartHandler = (e) => {
-    console.log("working");
     // 드래그 시 반투명 이미지 추가
     const img = new Image();
     e.dataTransfer.setDragImage(img, 0, 0);
@@ -77,8 +81,60 @@ const TodoBoard = () => {
     originalY = e.target.offsetTop;
   };
 
+  // 드래그 중일 때 실행 - onDrag
+  const dragHandler = (e) => {
+    e.target.style.left = `${e.target.offsetLeft + e.clientX - position.x}px`;
+    e.target.style.top = `${e.target.offsetTop + e.clientY - position.y}px`;
+    position.y = e.clientY;
+    position.x = e.clientX;
+    console.log(position.x, position.y);
+  };
+
+  // 드래그 끝났을 때 실행(마우스 놓으면서) - onDragEnd
+  const dragEndHandler = (e) => {
+    // 올바른 영역에 드랍 되었는지 체크
+    const box = postBoard.current.getBoundingClientRect();
+    if (
+      box.left < e.clientX &&
+      e.clientX < box.right &&
+      box.top < e.clientY &&
+      e.clientY < box.bottom
+    ) {
+      console.log("you are here");
+      // setTargets(targets => {
+      // const newTargets = [...targets];
+      // newTargets.push({
+      //  id: parseInt(e.timeStamp),
+      //  top: e.target.offsetTop + e.clientY - posY,
+      //  left: e.target.offsetLeft + e.clientX - posX,
+      //  details: STOCK_DATA[e.target.id],
+      // });
+      // return newTargets;
+      // });
+    }
+
+    // 잘못된 영역이면 원래 위치로 이동
+    e.target.style.left = `${originalX}px`;
+    e.target.style.top = `${originalY}px`;
+  };
+
+  // useEffect(() => {
+  //   setBox({
+  //     top: box.top,
+  //     left: box.left,
+  //     bottom: box.top + box.height,
+  //     right: box.left + box.width,
+  //   });
+  // }, []);
+
   return (
-    <div className="todo-board" ref={postBoard} onDragStart={dragStartHandler}>
+    <div
+      className="todo-board"
+      ref={postBoard}
+      onDragStart={dragStartHandler}
+      onDrag={dragHandler}
+      onDragEnd={dragEndHandler}
+    >
       {todoLists.map((todoList, index) => {
         return (
           <TodoList
