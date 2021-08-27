@@ -48,7 +48,7 @@ body {
   /* background: #161a2b; */
   background: #ffd20c;
   text-align: center;
-  margin: 15px;
+  /* margin: 15px; */
   border-radius: 10px;
   padding-bottom: 32px;
   position: absolute;
@@ -68,7 +68,7 @@ body {
 */
 
 /* editing block */
-.edit-block {
+/* .edit-block {
   display: flex;
   flex-direction: column;
   justify-content: start;
@@ -78,7 +78,7 @@ body {
   text-align: center;
   border-radius: 10px;
   position: absolute;
-}
+} */
 
 .plus-icon {
   position: absolute;

@@ -7,6 +7,13 @@ const TodoBoard = () => {
   // ['apple', 'avocado', 'ace'], ['banana','bun', 'bowl'], ['cake','cactus'] ... 이렇게 가야함
   const [todoLists, setTodoLists] = useState([{ id: 0, todos: [] }]);
 
+  // 드랍할 영역이 위치한 컴포넌트
+  const postBoard = useRef(null);
+
+  // position은 실시간 좌표 / oriPosition은 원래 좌표만 담고 있음
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [oriPosition, setOriPosition] = useState({ x: 0, y: 0 });
+
   // post it 추가
   const addPostit = (todos) => {
     // todos는 [ {id:1234, text: input}, {id:1234, text: input}, {id:1234, text: input}, ... ,{} ]
@@ -53,45 +60,42 @@ const TodoBoard = () => {
 
   // Drag and Drop 구현
 
-  // 드랍할 영역이 위치한 컴포넌트
-  const postBoard = useRef(null);
-  // const box = postBoard.current.getBoundingClientRect();
-  // const [targets, setTargets] = useState("");
-
-  const [position, setPosition] = useState({ x: 0, y: 0 });
-  // let posX = 0;
-  // let posY = 0;
-
-  let originalX = 0;
-  let originalY = 0;
-
   // 드래그 시작되었을 때 실행 - onDragStart
   const dragStartHandler = (e) => {
+    if (e.target.className !== "todo-app") return;
     // 드래그 시 반투명 이미지 추가
     const img = new Image();
     e.dataTransfer.setDragImage(img, 0, 0);
 
     // 이동시킬 때 필요한 좌표
     setPosition({ x: e.clientX, y: e.clientY });
-    // posX = e.clientX;
-    // posY = e.clientY;
 
     // 초기 위치 값 (잘못된 위치에 놓았을 때 다시 원래 위치로 돌아갈 수 있도록)
-    originalX = e.target.offsetLeft;
-    originalY = e.target.offsetTop;
+    setOriPosition({ x: e.target.offsetLeft, y: e.target.offsetTop });
   };
 
   // 드래그 중일 때 실행 - onDrag
   const dragHandler = (e) => {
+    if (e.target.className !== "todo-app") return;
+
+    // const box = postBoard.current.getBoundingClientRect();
+
+    // 요소의 좌표 + 커서 좌표 변화량
+    // 현재 요소의 좌표 + 현재 커서의 좌표 - 직전 커서의 좌표
     e.target.style.left = `${e.target.offsetLeft + e.clientX - position.x}px`;
     e.target.style.top = `${e.target.offsetTop + e.clientY - position.y}px`;
-    position.y = e.clientY;
-    position.x = e.clientX;
+
+    setPosition({ x: e.clientX, y: e.clientY });
+
+    console.log(e.target.style.left, e.target.style.top);
+    console.log(e.target.offsetLeft, e.target.offsetTop);
+    console.log(e.clientX, e.clientY);
     console.log(position.x, position.y);
   };
 
   // 드래그 끝났을 때 실행(마우스 놓으면서) - onDragEnd
   const dragEndHandler = (e) => {
+    if (e.target.className !== "todo-app") return;
     // 올바른 영역에 드랍 되었는지 체크
     const box = postBoard.current.getBoundingClientRect();
     if (
@@ -100,32 +104,18 @@ const TodoBoard = () => {
       box.top < e.clientY &&
       e.clientY < box.bottom
     ) {
-      console.log("you are here");
-      // setTargets(targets => {
-      // const newTargets = [...targets];
-      // newTargets.push({
-      //  id: parseInt(e.timeStamp),
-      //  top: e.target.offsetTop + e.clientY - posY,
-      //  left: e.target.offsetLeft + e.clientX - posX,
-      //  details: STOCK_DATA[e.target.id],
-      // });
-      // return newTargets;
-      // });
+      // 옮겨진 자리
+      e.target.style.left = `${e.target.offsetLeft + e.clientX - position.x}px`;
+      e.target.style.top = `${e.target.offsetTop + e.clientY - position.y}px`;
+    } else {
+      // 잘못된 영역이면 원래 위치로 이동
+      e.target.style.left = `${oriPosition.x}px`;
+      e.target.style.top = `${oriPosition.y}px`;
     }
 
-    // 잘못된 영역이면 원래 위치로 이동
-    e.target.style.left = `${originalX}px`;
-    e.target.style.top = `${originalY}px`;
+    // drag 끝난 것 가장 앞으로 보내기 / 혹은 클릭했을 때
+    // e.target.style.zIndex = ''
   };
-
-  // useEffect(() => {
-  //   setBox({
-  //     top: box.top,
-  //     left: box.left,
-  //     bottom: box.top + box.height,
-  //     right: box.left + box.width,
-  //   });
-  // }, []);
 
   return (
     <div
