@@ -75,9 +75,6 @@ const TodoList = ({
   const handleEditPost = () => {
     setIsEdit(true);
 
-    // editing unblock
-    // editBlock.current.style.display = "none";
-
     setTodos(todoList.todos);
   };
 
@@ -85,9 +82,6 @@ const TodoList = ({
     setIsEdit(false);
     editPostit(todoList.id, todos);
     // Edit 상태일 때만 작업할 수 있도록(input 넣기, update하기, todo 삭제하기 등등)
-
-    // editing block
-    // editBlock.current.style.display = "flex";
 
     setTodos([]); // edit done 하고 add post 하면 todos 그대로 복사해가므로 초기화
   };
@@ -111,13 +105,6 @@ const TodoList = ({
     },
     [setAnchorPoint, setShow]
   );
-
-  // useEffect(() => {
-  //   if (todoList.id === 0) {
-  //     // editing unblock
-  //     editBlock.current.style.display = "none";
-  //   }
-  // }, [todoList]);
 
   const handleClick = useCallback(() => (show ? setShow(false) : null), [show]);
 
@@ -152,16 +139,12 @@ const TodoList = ({
     setShow(false);
   };
 
-  // const editBlock = useRef(null);
-
   return (
     <div
       className="todo-app"
       ref={todoAppRef}
       onClick={(e) => handlePostIndex(e)}
     >
-      {/* Editing -> Edit cover */}
-      {/* <div className="edit-block" ref={editBlock}></div> */}
       <TodoForm onSubmit={addTodo} />
       <Todo
         // postit이 motherpost일때만 받아적을 수 있도록 todos 해놓고,
@@ -170,6 +153,7 @@ const TodoList = ({
         completeTodo={completeTodo}
         removeTodo={removeTodo}
         updateTodo={updateTodo}
+        isEdit={isEdit}
       />
       <FiPlusCircle className="plus-icon" onClick={handleAddPost} />
       {/* postit이 1개 남았을 때(motherpost만 남았을 때/id = 0)는 제거 못하도록 한다 */}
@@ -179,7 +163,7 @@ const TodoList = ({
           onClick={() => removePostit(todoList.id)}
         />
       )}
-      {todoList.id !== 0 && (
+      {todoList.id !== 0 && !isEdit && (
         <TiEdit className="edit-icon postit" onClick={handleEditPost} />
       )}
       {todoList.id !== 0 && isEdit && (
@@ -195,10 +179,10 @@ const TodoList = ({
         >
           <li onClick={handleAddPost}>add</li>
           <li onClick={handleEditPost}>edit</li>
+          {isEdit && <li onClick={handleEditDone}>edit done</li>}
           <li onClick={() => removePostit(todoList.id)}>delete</li>
           <li onClick={changeColor}>changing color</li>
           <hr className="divider" />
-          <li>Refresh</li>
           <li onClick={handleClick}>Exit</li>
         </ul>
       ) : (

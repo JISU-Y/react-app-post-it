@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import { FiBox } from "react-icons/fi";
 import TodoList from "./TodoList";
+import Alert from "./Alert";
 
 const TodoBoard = () => {
   // todoList -> todo 배열의 배열
@@ -9,10 +10,20 @@ const TodoBoard = () => {
 
   // 드랍할 영역이 위치한 컴포넌트
   const postBoard = useRef(null);
-
   // position은 실시간 좌표 / oriPosition은 원래 좌표만 담고 있음
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [oriPosition, setOriPosition] = useState({ x: 0, y: 0 });
+
+  // Alert 관련
+  const [alert, setAlert] = useState({
+    show: false,
+    msg: "",
+    type: "",
+  });
+
+  const showAlert = (show = false, type = "", msg = "") => {
+    setAlert({ show: show, type: type, msg: msg });
+  };
 
   // post it 추가
   const addPostit = (todos) => {
@@ -53,6 +64,9 @@ const TodoBoard = () => {
   // PostIt 삭제
   const removePostit = (id) => {
     if (id === 0) return;
+
+    showAlert(true, "danger", "do you really want to remove?");
+
     const removedPost = [...todoLists].filter((todoList) => todoList.id !== id);
 
     setTodoLists(removedPost);
@@ -63,6 +77,7 @@ const TodoBoard = () => {
   // 드래그 시작되었을 때 실행 - onDragStart
   const dragStartHandler = (e) => {
     if (e.target.className !== "todo-app") return;
+
     // drag 끝난 것 가장 앞으로 보내기 / 혹은 클릭했을 때
     handlePostIndex(e);
 
@@ -113,12 +128,18 @@ const TodoBoard = () => {
   };
 
   const handlePostIndex = (e) => {
-    // childNodes는 nodeList라 이렇게 배열로 변환해주어야 loop syntax를 사용할 수 있다
-    const allPosts = [...e.target.parentNode.childNodes];
+    if (e.target.className !== "todo-app") return;
 
-    allPosts.map((post) => (post.style.zIndex = "0"));
+    // childNodes/children는 nodeList라 이렇게 배열로 변환해주어야 loop syntax를 사용할 수 있다
+    const allPosts = [...e.target.parentNode.children];
 
+    // 일단 모든 todo app 의 z-index를 unset
+    allPosts.map((post) => (post.style.zIndex = "unset"));
+
+    // 선택된 todo app의 z index만 100으로 변경
     e.target.style.zIndex = "100";
+
+    // todo-app 클릭 시 / drag start 시 적용
   };
 
   return (
@@ -142,6 +163,7 @@ const TodoBoard = () => {
           />
         );
       })}
+      {alert.show && <Alert {...alert} />}
     </div>
   );
 };
@@ -154,13 +176,17 @@ export default TodoBoard;
 // => 그러려고 했는데 그럴 이유가 굳이 없음. 스티커 메모처럼
 // 생성했으면 그 메모에서도  + 하여 생성할 수 있도록 해야함
 
-// backend 구현해야함 (MERN ? , Firebase? , 일단 Local Storage?)
-// 완성된 todo는 밑으로 보내서 해야할 것들이 todo list의 상단에 올라오도록
-// css post it 처럼 꾸미기
 // todo list 색 바꿀 수 있도록 수정 (오른쪽 마우스 클릭해서 몇 가지 색으로만 바꿀 수 있도록) => 오른쪽 마우스 클릭 됨
 // postit 개별 삭제 추가 => 됨
 // postit 개별 edit 추가 => 됨
+// Board 안에서 post it 드래그 앤 드랍 할 수 있도록 구현 -> 됨
+// context menu 한개 element에서만 동작하도록 -> 됨
 
 // 우선순위
-// Board 안에서 post it 드래그 앤 드랍 할 수 있도록 구현
-// context menu 한개 element에서만 동작하도록
+// changing color 저장되도록 추가 (태그 처럼 사용 / 중요, 오늘 할 일, 기타, 살 것 ...)
+// backend 구현해야함 (MERN ? , Firebase? , 일단 Local Storage?)
+// 완성된 todo는 밑으로 보내서 해야할 것들이 todo list의 상단에 올라오도록
+// 여러 에러(내용 없이 add todo, post 제거 시 진짜 제거 alert창, edit done 시 alert창 등등) 구현
+// css post it 처럼 꾸미기
+// source post는 좀 더 잘 보이게 꾸미기 / 고정 시켜놓기
+// 로그인 / 회원가입 구현

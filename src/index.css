@@ -54,6 +54,7 @@ body {
   position: absolute;
   top: 0;
   left: 0;
+  z-index: unset;
 }
 
 .todo-app:hover {
@@ -261,4 +262,12 @@ h1 {
 
 .menu li:hover {
   background-color: #aaa;
+}
+
+/* Alert */
+.alert {
+  width: 300px;
+  height: 100px;
+  background-color: tomato;
+  color: #fff;
 }
