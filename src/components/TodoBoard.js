@@ -63,6 +63,9 @@ const TodoBoard = () => {
   // 드래그 시작되었을 때 실행 - onDragStart
   const dragStartHandler = (e) => {
     if (e.target.className !== "todo-app") return;
+    // drag 끝난 것 가장 앞으로 보내기 / 혹은 클릭했을 때
+    handlePostIndex(e);
+
     // 드래그 시 반투명 이미지 추가
     const img = new Image();
     e.dataTransfer.setDragImage(img, 0, 0);
@@ -86,11 +89,6 @@ const TodoBoard = () => {
     e.target.style.top = `${e.target.offsetTop + e.clientY - position.y}px`;
 
     setPosition({ x: e.clientX, y: e.clientY });
-
-    console.log(e.target.style.left, e.target.style.top);
-    console.log(e.target.offsetLeft, e.target.offsetTop);
-    console.log(e.clientX, e.clientY);
-    console.log(position.x, position.y);
   };
 
   // 드래그 끝났을 때 실행(마우스 놓으면서) - onDragEnd
@@ -112,9 +110,15 @@ const TodoBoard = () => {
       e.target.style.left = `${oriPosition.x}px`;
       e.target.style.top = `${oriPosition.y}px`;
     }
+  };
 
-    // drag 끝난 것 가장 앞으로 보내기 / 혹은 클릭했을 때
-    // e.target.style.zIndex = ''
+  const handlePostIndex = (e) => {
+    // childNodes는 nodeList라 이렇게 배열로 변환해주어야 loop syntax를 사용할 수 있다
+    const allPosts = [...e.target.parentNode.childNodes];
+
+    allPosts.map((post) => (post.style.zIndex = "0"));
+
+    e.target.style.zIndex = "100";
   };
 
   return (
@@ -134,6 +138,7 @@ const TodoBoard = () => {
             addPostit={addPostit}
             removePostit={removePostit}
             editPostit={editPostit}
+            handlePostIndex={handlePostIndex}
           />
         );
       })}

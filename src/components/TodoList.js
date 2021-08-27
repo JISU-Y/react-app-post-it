@@ -8,11 +8,11 @@ import { ImCross } from "react-icons/im";
 
 //todoList 는 TodoBoard에서 가져온 todos의 배열 중 배열 한 개씩
 const TodoList = ({
-  todoLists,
   todoList,
   addPostit,
   removePostit,
   editPostit,
+  handlePostIndex,
 }) => {
   // 여기서 따로 사용할 todo 배열
   // todos는 todo ({id:1,text:a}의 모음/배열)
@@ -155,7 +155,11 @@ const TodoList = ({
   // const editBlock = useRef(null);
 
   return (
-    <div className="todo-app" ref={todoAppRef}>
+    <div
+      className="todo-app"
+      ref={todoAppRef}
+      onClick={(e) => handlePostIndex(e)}
+    >
       {/* Editing -> Edit cover */}
       {/* <div className="edit-block" ref={editBlock}></div> */}
       <TodoForm onSubmit={addTodo} />
