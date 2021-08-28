@@ -57,6 +57,9 @@ const TodoBoard = () => {
 
     const removedPost = [...todoLists].filter((todoList) => todoList.id !== id);
 
+    // 지우면 해당 포스트잇이 지워지기는 하는데
+    // 지워진 포스트잇의 자리를 다음 포스트잇들이 뺏어서 채움
+
     setTodoLists(removedPost);
   };
 

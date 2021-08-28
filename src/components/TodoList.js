@@ -6,6 +6,7 @@ import { FiPlusCircle, FiMinusCircle } from "react-icons/fi";
 import { TiEdit } from "react-icons/ti";
 import { MdDone } from "react-icons/md";
 import { ImCross } from "react-icons/im";
+import modal from "./Modal";
 
 //todoList 는 TodoBoard에서 가져온 todos의 배열 중 배열 한 개씩
 const TodoList = ({
@@ -82,7 +83,6 @@ const TodoList = ({
   const handleEditDone = () => {
     setIsEdit(false);
     editPostit(todoList.id, todos);
-    // Edit 상태일 때만 작업할 수 있도록(input 넣기, update하기, todo 삭제하기 등등)
 
     setTodos([]); // edit done 하고 add post 하면 todos 그대로 복사해가므로 초기화
   };
@@ -140,14 +140,25 @@ const TodoList = ({
     setShow(false);
   };
 
-  // modal open 관련
-  const [modalOpen, setModalOpen] = useState(false);
+  // modal 관련
+  const [modalType, setModalType] = useState({
+    open: false,
+    type: "",
+    msg: "",
+  });
 
-  const openModal = () => {
-    setModalOpen(true);
+  // 포스트 삭제 modal
+  const openRemoveModal = () => {
+    setModalType({ open: true, type: "warning", msg: "Are you sure?" });
   };
+
+  // edit done modal
+  const openEditDoneModal = () => {
+    setModalType({ open: true, type: "checking", msg: "Editing done?" });
+  };
+
   const closeModal = () => {
-    setModalOpen(false);
+    setModalType(false, "", "");
   };
 
   return (
@@ -169,7 +180,7 @@ const TodoList = ({
       <FiPlusCircle className="plus-icon" onClick={handleAddPost} />
       {/* postit이 1개 남았을 때(motherpost만 남았을 때/id = 0)는 제거 못하도록 한다 */}
       {todoList.id !== 0 && (
-        <FiMinusCircle className="minus-icon" onClick={openModal} />
+        <FiMinusCircle className="minus-icon" onClick={openRemoveModal} />
       )}
       {todoList.id !== 0 && !isEdit && (
         <TiEdit className="edit-icon postit" onClick={handleEditPost} />
@@ -188,19 +199,15 @@ const TodoList = ({
           <li onClick={handleAddPost}>add</li>
           <li onClick={handleEditPost}>edit</li>
           {isEdit && <li onClick={handleEditDone}>edit done</li>}
-          <li onClick={openModal}>delete</li>
+          <li onClick={openRemoveModal}>delete</li>
           <li onClick={changeColor}>changing color</li>
           <hr className="divider" />
           <li onClick={handleClick}>Exit</li>
         </ul>
-      ) : (
-        <> </>
-      )}
-      <Modal
-        open={modalOpen}
+      ) : null}
+      <modal
+        modalType={modalType}
         close={closeModal}
-        type="warning"
-        msg="Are you sure?"
         todoList={todoList}
         removePostit={removePostit}
       />
