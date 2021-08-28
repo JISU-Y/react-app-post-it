@@ -1,6 +1,12 @@
 import React from "react";
 
-const modal = ({ modalType, close, todoList, removePostit }) => {
+const modal = ({
+  modalType,
+  close,
+  todoList,
+  removePostit,
+  handleEditDone,
+}) => {
   return (
     <div className={modalType.open ? "modal open" : "modal"} onClick={close}>
       {modalType.open ? (
@@ -16,7 +22,11 @@ const modal = ({ modalType, close, todoList, removePostit }) => {
             <button
               className="close"
               onClick={() => {
-                removePostit(todoList.id);
+                if (modalType.type === "remove") {
+                  removePostit(todoList.id);
+                } else if (modalType.type === "editDone") {
+                  handleEditDone();
+                }
               }}
             >
               yes

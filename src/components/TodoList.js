@@ -6,7 +6,6 @@ import { FiPlusCircle, FiMinusCircle } from "react-icons/fi";
 import { TiEdit } from "react-icons/ti";
 import { MdDone } from "react-icons/md";
 import { ImCross } from "react-icons/im";
-import modal from "./Modal";
 
 //todoList 는 TodoBoard에서 가져온 todos의 배열 중 배열 한 개씩
 const TodoList = ({
@@ -149,12 +148,12 @@ const TodoList = ({
 
   // 포스트 삭제 modal
   const openRemoveModal = () => {
-    setModalType({ open: true, type: "warning", msg: "Are you sure?" });
+    setModalType({ open: true, type: "remove", msg: "Are you sure?" });
   };
 
   // edit done modal
   const openEditDoneModal = () => {
-    setModalType({ open: true, type: "checking", msg: "Editing done?" });
+    setModalType({ open: true, type: "editDone", msg: "Editing done?" });
   };
 
   const closeModal = () => {
@@ -186,7 +185,13 @@ const TodoList = ({
         <TiEdit className="edit-icon postit" onClick={handleEditPost} />
       )}
       {todoList.id !== 0 && isEdit && (
-        <MdDone className="done-icon" onClick={handleEditDone} />
+        <MdDone
+          className="done-icon"
+          onClick={() => {
+            openEditDoneModal();
+            // handleEditDone()
+          }}
+        />
       )}
       {show ? (
         <ul
@@ -198,18 +203,28 @@ const TodoList = ({
         >
           <li onClick={handleAddPost}>add</li>
           <li onClick={handleEditPost}>edit</li>
-          {isEdit && <li onClick={handleEditDone}>edit done</li>}
+          {isEdit && (
+            <li
+              onClick={() => {
+                openEditDoneModal();
+                // handleEditDone()
+              }}
+            >
+              edit done
+            </li>
+          )}
           <li onClick={openRemoveModal}>delete</li>
           <li onClick={changeColor}>changing color</li>
           <hr className="divider" />
           <li onClick={handleClick}>Exit</li>
         </ul>
       ) : null}
-      <modal
+      <Modal
         modalType={modalType}
         close={closeModal}
         todoList={todoList}
         removePostit={removePostit}
+        handleEditDone={handleEditDone}
       />
     </div>
   );
