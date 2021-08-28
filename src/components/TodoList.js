@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import Todo from "./Todo";
 import TodoForm from "./TodoForm";
+import Modal from "./Modal";
 import { FiPlusCircle, FiMinusCircle } from "react-icons/fi";
 import { TiEdit } from "react-icons/ti";
 import { MdDone } from "react-icons/md";
@@ -139,6 +140,16 @@ const TodoList = ({
     setShow(false);
   };
 
+  // modal open 관련
+  const [modalOpen, setModalOpen] = useState(false);
+
+  const openModal = () => {
+    setModalOpen(true);
+  };
+  const closeModal = () => {
+    setModalOpen(false);
+  };
+
   return (
     <div
       className="todo-app"
@@ -158,10 +169,7 @@ const TodoList = ({
       <FiPlusCircle className="plus-icon" onClick={handleAddPost} />
       {/* postit이 1개 남았을 때(motherpost만 남았을 때/id = 0)는 제거 못하도록 한다 */}
       {todoList.id !== 0 && (
-        <FiMinusCircle
-          className="minus-icon"
-          onClick={() => removePostit(todoList.id)}
-        />
+        <FiMinusCircle className="minus-icon" onClick={openModal} />
       )}
       {todoList.id !== 0 && !isEdit && (
         <TiEdit className="edit-icon postit" onClick={handleEditPost} />
@@ -180,7 +188,7 @@ const TodoList = ({
           <li onClick={handleAddPost}>add</li>
           <li onClick={handleEditPost}>edit</li>
           {isEdit && <li onClick={handleEditDone}>edit done</li>}
-          <li onClick={() => removePostit(todoList.id)}>delete</li>
+          <li onClick={openModal}>delete</li>
           <li onClick={changeColor}>changing color</li>
           <hr className="divider" />
           <li onClick={handleClick}>Exit</li>
@@ -188,6 +196,14 @@ const TodoList = ({
       ) : (
         <> </>
       )}
+      <Modal
+        open={modalOpen}
+        close={closeModal}
+        type="warning"
+        msg="Are you sure?"
+        todoList={todoList}
+        removePostit={removePostit}
+      />
     </div>
   );
 };

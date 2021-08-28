@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import { FiBox } from "react-icons/fi";
 import TodoList from "./TodoList";
-import Alert from "./Alert";
+import Modal from "./Modal";
 
 const TodoBoard = () => {
   // todoList -> todo 배열의 배열
@@ -13,17 +13,6 @@ const TodoBoard = () => {
   // position은 실시간 좌표 / oriPosition은 원래 좌표만 담고 있음
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [oriPosition, setOriPosition] = useState({ x: 0, y: 0 });
-
-  // Alert 관련
-  const [alert, setAlert] = useState({
-    show: false,
-    msg: "",
-    type: "",
-  });
-
-  const showAlert = (show = false, type = "", msg = "") => {
-    setAlert({ show: show, type: type, msg: msg });
-  };
 
   // post it 추가
   const addPostit = (todos) => {
@@ -63,9 +52,8 @@ const TodoBoard = () => {
 
   // PostIt 삭제
   const removePostit = (id) => {
+    // source post는 remove 하지 않음
     if (id === 0) return;
-
-    showAlert(true, "danger", "do you really want to remove?");
 
     const removedPost = [...todoLists].filter((todoList) => todoList.id !== id);
 
@@ -131,7 +119,9 @@ const TodoBoard = () => {
     if (e.target.className !== "todo-app") return;
 
     // childNodes/children는 nodeList라 이렇게 배열로 변환해주어야 loop syntax를 사용할 수 있다
-    const allPosts = [...e.target.parentNode.children];
+    const allPosts = [...e.target.parentNode.children].filter(
+      (post) => post.className === "todo-app"
+    ); // todo app 만 걸러냄(children에서 modal은 뺌)
 
     // 일단 모든 todo app 의 z-index를 unset
     allPosts.map((post) => (post.style.zIndex = "unset"));
@@ -163,7 +153,6 @@ const TodoBoard = () => {
           />
         );
       })}
-      {alert.show && <Alert {...alert} />}
     </div>
   );
 };
