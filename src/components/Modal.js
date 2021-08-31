@@ -26,6 +26,10 @@ const modal = ({
                   removePostit(todoList.id);
                 } else if (modalType.type === "editDone") {
                   handleEditDone();
+                } else if (modalType.type === "warning") {
+                  console.log("no input warning");
+                } else if (modalType.type === "edit") {
+                  console.log("edit button");
                 }
               }}
             >

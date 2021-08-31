@@ -156,6 +156,24 @@ const TodoList = ({
     setModalType({ open: true, type: "editDone", msg: "Editing done?" });
   };
 
+  // no input modal
+  const openNoInputModal = () => {
+    setModalType({
+      open: true,
+      type: "warning",
+      msg: "You should enter an input",
+    });
+  };
+
+  // please edit button modal
+  const openPleaseEditModal = () => {
+    setModalType({
+      open: true,
+      type: "edit",
+      msg: "Please press the editing icon",
+    });
+  };
+
   const closeModal = () => {
     setModalType(false, "", "");
   };
@@ -166,7 +184,12 @@ const TodoList = ({
       ref={todoAppRef}
       onClick={(e) => handlePostIndex(e)}
     >
-      <TodoForm onSubmit={addTodo} />
+      <TodoForm
+        onSubmit={addTodo}
+        openNoInputModal={openNoInputModal}
+        isEdit={isEdit}
+        openPleaseEditModal={openPleaseEditModal}
+      />
       <Todo
         // postit이 motherpost일때만 받아적을 수 있도록 todos 해놓고,
         // 나머지는 todoList에 있는 todos 내용 고대로 가져와서 display 한다
@@ -185,13 +208,7 @@ const TodoList = ({
         <TiEdit className="edit-icon postit" onClick={handleEditPost} />
       )}
       {todoList.id !== 0 && isEdit && (
-        <MdDone
-          className="done-icon"
-          onClick={() => {
-            openEditDoneModal();
-            // handleEditDone()
-          }}
-        />
+        <MdDone className="done-icon" onClick={openEditDoneModal} />
       )}
       {show ? (
         <ul
@@ -203,16 +220,7 @@ const TodoList = ({
         >
           <li onClick={handleAddPost}>add</li>
           <li onClick={handleEditPost}>edit</li>
-          {isEdit && (
-            <li
-              onClick={() => {
-                openEditDoneModal();
-                // handleEditDone()
-              }}
-            >
-              edit done
-            </li>
-          )}
+          {isEdit && <li onClick={openEditDoneModal}>edit done</li>}
           <li onClick={openRemoveModal}>delete</li>
           <li onClick={changeColor}>changing color</li>
           <hr className="divider" />

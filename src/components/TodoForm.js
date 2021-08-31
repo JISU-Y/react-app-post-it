@@ -19,6 +19,14 @@ const TodoForm = (props) => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
+    if (input === "") {
+      if (props.isEdit) {
+        props.openNoInputModal();
+      } else {
+        props.openPleaseEditModal();
+      }
+    }
+
     // 다른 component로 data 전달
     // id는 랜덤생성, text는 input에서 전달받은 value
     // 근데 이건 뭐지 .onSubmit은 뭐야
