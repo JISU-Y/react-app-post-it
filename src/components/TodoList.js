@@ -189,6 +189,7 @@ const TodoList = ({
         openNoInputModal={openNoInputModal}
         isEdit={isEdit}
         openPleaseEditModal={openPleaseEditModal}
+        todoList={todoList}
       />
       <Todo
         // postit이 motherpost일때만 받아적을 수 있도록 todos 해놓고,
@@ -198,6 +199,7 @@ const TodoList = ({
         removeTodo={removeTodo}
         updateTodo={updateTodo}
         isEdit={isEdit}
+        todoList={todoList}
       />
       <FiPlusCircle className="plus-icon" onClick={handleAddPost} />
       {/* postit이 1개 남았을 때(motherpost만 남았을 때/id = 0)는 제거 못하도록 한다 */}

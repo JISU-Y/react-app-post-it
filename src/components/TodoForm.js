@@ -20,7 +20,7 @@ const TodoForm = (props) => {
     e.preventDefault();
 
     if (input === "") {
-      if (props.isEdit) {
+      if (props.isEdit || props.todoList.id === 0) {
         props.openNoInputModal();
       } else {
         props.openPleaseEditModal();

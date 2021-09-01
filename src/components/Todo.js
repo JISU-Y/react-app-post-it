@@ -3,7 +3,14 @@ import TodoForm from "./TodoForm";
 import { RiCloseCircleLine } from "react-icons/ri";
 import { RiEdit2Fill } from "react-icons/ri";
 
-const Todo = ({ todos, completeTodo, removeTodo, updateTodo, isEdit }) => {
+const Todo = ({
+  todos,
+  completeTodo,
+  removeTodo,
+  updateTodo,
+  isEdit,
+  todoList,
+}) => {
   const [edit, setEdit] = useState({ id: null, value: "" });
 
   const submitUpdate = (value) => {
@@ -27,7 +34,7 @@ const Todo = ({ todos, completeTodo, removeTodo, updateTodo, isEdit }) => {
         {todo.text}
       </div>
       {/* edit 중일 때만 icons 보이기 */}
-      {isEdit && (
+      {(todoList.id === 0 || isEdit) && (
         <div className="icons">
           <RiCloseCircleLine
             onClick={() => removeTodo(todo.id)}
