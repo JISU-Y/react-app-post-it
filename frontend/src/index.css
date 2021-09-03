@@ -28,13 +28,14 @@ body {
 
 .todo-board {
   background-color: whitesmoke;
-  width: 90vw;
+  width: 95vw;
   height: 85vh;
   border-radius: 5px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
   display: flex;
   flex-wrap: wrap;
   position: relative;
+  border: 20px solid #cd6133;
   /* overflow 안에 element 밖으로 나가도 됨 */
 }
 
@@ -130,6 +131,7 @@ h1 {
 
 .todo-form {
   margin-bottom: 32px;
+  resize: none;
 }
 
 .todo-input {
@@ -194,7 +196,6 @@ h1 {
     rgba(255, 118, 20, 1) 0%,
     rgba(255, 84, 17, 1) 100%
   );
-
   padding: 16px;
   border-radius: 5px;
   width: 90%;
