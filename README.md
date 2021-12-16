@@ -1,70 +1,67 @@
-# Getting Started with Create React App
+# 📑 Post It! (ver 1)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## 프로젝트 설명
+포스트잇을 이용해서 즉각적으로 생각나는 것들을 추가하고,
+이를 모든 사람과 공유할 수 있는 웹 어플리케이션
 
-## Available Scripts
+[link] https://jisu-y.github.io/PostIt/
 
-In the project directory, you can run:
+---
 
-### `npm start`
+### 😄 주요 기능
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+1. todo 추가, 완료, 수정, 삭제 기능
+2. todo 추가 후 Post It 생성
+3. Post It Drag & Drop 기능
+4. Post It 색 변경 기능
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+---
+<!-- Line -->
 
-### `npm test`
+### 🔵 Main UI
+![mainUI](https://user-images.githubusercontent.com/80020227/146299145-e08d38ae-c9fa-4c53-a90b-770330ceb588.JPG)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+---
 
-### `npm run build`
+### 👨‍🏫 사용 방법
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+1. todo 작성
+- 추가하고 싶은 할 일 input에 입력
+- 삭제 : todo 항목 오른쪽에 있는 X 버튼 클릭
+- 수정 : todo 항목 오른쪽에 있는 edit icon 클릭
+- 완료 : todo 항목 text 부분 클릭
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+2. Post It 생성
+- 작성한 todo가 있으면 Post 오른쪽 + 버튼 클릭
+- 작성했던 todo 내용이 담긴 Post 생성
+- 작성한 todo 없어도 빈 Post 생성
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+3. Post It 수정
+- 생성된 Post 하단 Edit 모양 icon 클릭 시 수정 가능
+- todo 내용 수정
+- 마우스 오른쪽 클릭 시 context menu 생성 (post 추가, 삭제, edit done, post 색상 변경 기능 선택 가능)
 
-### `npm run eject`
+4. Post It 삭제
+- Post 왼쪽 하단 - 버튼 클릭 시 Post 삭제
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+5. drag & drop
+- Post drag & drop으로 원하는 위치 선정 가능
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+---
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+### 🛠 기술 스택
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+- Frontend : React
 
-## Learn More
+---
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### 🎞 개발 과정
+ - to do 앱 기반으로 Post It 기획
+ - Vanilla JS와 Local Storage를 활용하여 기능 구현
+ - 반복되는 요소들의 재사용성을 위해 React로 리팩토링
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### 👨‍💻 개발 인원
+1인
 
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+### ⌛ 개발 기간
+2021.08.08 ~ 2021.08.31 약 3주
