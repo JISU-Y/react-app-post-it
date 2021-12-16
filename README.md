@@ -1,10 +1,8 @@
-# 📑 Post It! (ver 1)
+# 📑 Post It! (ver 2)
 
 ## 프로젝트 설명
 포스트잇을 이용해서 즉각적으로 생각나는 것들을 추가하고,
 이를 모든 사람과 공유할 수 있는 웹 어플리케이션
-
-[link] https://jisu-y.github.io/PostIt/
 
 ---
 
